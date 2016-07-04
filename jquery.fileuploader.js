@@ -15,9 +15,15 @@
 	var fileuploaderdiv;
 
 	/**
+	 * @var {} The triggered event object
+	 */
+	var eventObject;
+
+	/**
 	 * @var bool true|false This boolean stores whether ajax file upload is supported or not
 	 */
 	var uploadenabled;
+	var draganddroparea;
 
 	//plugin definition
 	$.fn.fileuploader = function(options){
@@ -31,7 +37,7 @@
 		//set the drag and drop aread
 		createDragAndDropArea();
 		createFilePreviewArea();
-		createSubmitButton();
+		createInputButtons();
 
 		//setting the default options
 		var settings = $.extend({
@@ -49,32 +55,29 @@
 		 */
 		function createDragAndDropArea(){
 
-			var draganddroparea = document.createElement("div");
-			draganddroparea.className = "jquery-fileuploader-draganddroparea";
-			draganddroparea.appendChild(document.createTextNode("Drop files here to upload"));
-			draganddroparea.appendChild(document.createElement("br"));
-			draganddroparea.appendChild(document.createTextNode("Or"));
-			draganddroparea.appendChild(document.createElement("br"));
-
-			//create an input file
-			var inputfield = document.createElement("input");
-			inputfield.type = "file";
-			inputfield.name = "images";
-			inputfield.addEventListener("change", FileSelectHandler, false);
+			draganddroparea = document.createElement("div");
 			
-			//append to the draganddroparea div
-			draganddroparea.appendChild(inputfield);
-
-			//add event listeners to the file drag area
-			draganddroparea.addEventListener("dragover", FileDragHover, false);
-			draganddroparea.addEventListener("dragleave", FileDragHover, false);
-			draganddroparea.addEventListener("drop", FileSelectHandler, false);
-
-			//display the file drag ared div
-			draganddroparea.style.display = "block";
-
 			//append to the main fileuploaderdiv div
 			fileuploaderdiv.appendChild(draganddroparea);
+			
+			//is XHR2 available?
+			var xhr = new XMLHttpRequest();
+
+			if (xhr.upload) {
+
+
+				//add event listeners to the file drag area
+				draganddroparea.addEventListener("dragover", handleDragEvent);
+				draganddroparea.addEventListener("dragleave", handleDragEvent);
+				draganddroparea.addEventListener("drop", handleFileSelect);
+
+				//display the file drag ared div
+				draganddroparea.style.display = "block";
+
+			}
+
+			draganddroparea.className = "jquery-fileuploader-draganddroparea";
+			draganddroparea.appendChild(document.createTextNode("Drop files here to upload"));
 
 		}
 
@@ -98,68 +101,62 @@
 		 * @param null
 		 * @return null
 		 */
-		function createSubmitButton(){
+		function createInputButtons(){
 			
+			//div to hold the buttons
+			var inputButtons = document.createElement("div");
+			inputButtons.className = "jquery-uploader-input-buttons";
+
+			//file input button
+			var inputfield = document.createElement("input");
+			inputfield.type = "file";
+			inputButtons.appendChild(inputfield);
+			
+			inputfield.name = "files";
+			inputfield.addEventListener("change", handleFileSelect, false);
+
+			//form submit 
 			var formsubmitbutton = document.createElement("input");
 			formsubmitbutton.type = "submit";
-			formsubmitbutton.name = "Upload";
 			formsubmitbutton.value = "Upload";
-
+			inputButtons.appendChild(formsubmitbutton);
+			
 			//apend the main filedrop area div
-			fileuploaderdiv.appendChild(formsubmitbutton);
-
-		}
-
-		//initialize
-		function Init(){
-			var fileselect = document.getElementById("fileselect"),
-				filedrag = document.getElementById("filedrag"),
-				submitbutton = document.getElementById("submitbutton");
-
-			//file select
-			fileselect.addEventListener("change", FileSelectHandler, false);
-
-			//is XHR2 available?
-			var xhr = new XMLHttpRequest();
-
-			if (xhr.upload) {
-
-				//file drop
-				filedrag.addEventListener("dragover", FileDragHover, false);
-				filedrag.addEventListener("dragleave", FileDragHover, false);
-				filedrag.addEventListener("drop", FileSelectHandler, false);
-
-				filedrag.style.display = "block";
-
-
-
-			}
+			fileuploaderdiv.appendChild(inputButtons);
 
 		}
 
 		//file drag hover
-		function FileDragHover(e){
-			e.stopPropagation();
-			e.preventDefault();
-			e.target.className = (e.type == "dragover" ? "hover" : "");
+		function handleDragEvent(event){
+
+			//prevent the default from occuring and change the styles as appropriate
+			event.stopPropagation();
+			event.preventDefault();
+			event.target.className = (event.type == "dragover" ? "jquery-fileuploader-draganddroparea draganddroparea-hover" : "jquery-fileuploader-draganddroparea");
+		
 		}
 
 		//file selection
-		function FileSelectHandler(e){
+		function handleFileSelect(event){
+			
+			eventObject = event;
 
-			//cancel event and hover styling
-			FileDragHover(e);
+			//cancel event default and hover styling
+			handleDragEvent(event);
 
 			//fetch FileList object
-			var files = e.target.files || e.dataTransfer.files;
+			var files = event.target.files || event.dataTransfer.files;
 
-			//process all files
-			for(var i = 0, f; f=files[i]; i++){
-				ParseFile(f);
+			//loop through all files calling the file preview method
+			for(var file in files){
+
+				previewFile(files[file]);
+
 			}
+
 		}
 
-		function ParseFile(file) {
+		function previewFile(file) {
 
 		/*
 			Output(
@@ -169,9 +166,32 @@
 				"</strong> bytes</p>"
 			);
 		*/
+			//check for image file
+		    var imageFile = /^image\//;
+		    
+		    if (imageFile.test(file.type)) {
+
+				var reader = new FileReader();
+				var image = document.createElement("img");
+
+				image.file = file;
+				image.className = "jquery-uploader-img-thumbnail";
+				eventObject.target.parentNode.childNodes[1].appendChild(image);
+
+				reader.onload = function(event){
+
+					//var string = "<img width='200px' src='" + e.target.result + "'/>";
+					image.src = event.target.result;
+				
+				}
+
+				reader.readAsDataURL(file);
+
+		    }
 			//display text
 			if (file.type.indexOf("text") == 0) {
 				var reader = new FileReader();
+
 				reader.onload = function(e){
 					Output(
 						"<p><strong>" + file.name + ":</strong></p><pre>"+
@@ -183,15 +203,6 @@
 
 			console.log(file.type);
 
-			//display text
-			if (file.type.indexOf("image") == 0) {
-				var reader = new FileReader();
-				reader.onload = function(e){
-					Output("<p><strong>" + file.name + ":</strong><br>" + '<img width="200px" src="' + e.target.result + '"/></p>');
-				}
-
-				reader.readAsDataURL(file);
-			}	
 		}
 
 		//upload JPG files
