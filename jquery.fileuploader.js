@@ -172,11 +172,23 @@
 		    if (imageFile.test(file.type)) {
 
 				var reader = new FileReader();
-				var image = document.createElement("img");
 
+				//create the image container
+				var imageContainer = document.createElement("div");
+				imageContainer.className = "jquery-uploader-image-container";
+				eventObject.target.parentNode.childNodes[1].appendChild(imageContainer);
+
+				//create the delete button
+				var deleteButton = document.createElement("a");
+				deleteButton.innerHTML = "X";
+				deleteButton.className = "jquery-uploader-image-delete";
+				imageContainer.appendChild(deleteButton);
+
+				var image = document.createElement("img");
 				image.file = file;
 				image.className = "jquery-uploader-img-thumbnail";
-				eventObject.target.parentNode.childNodes[1].appendChild(image);
+				imageContainer.appendChild(image);
+				
 
 				reader.onload = function(event){
 
@@ -189,7 +201,7 @@
 
 		    }
 			//display text
-			if (file.type.indexOf("text") == 0) {
+			else if(file.type.indexOf("text") == 0) {
 				var reader = new FileReader();
 
 				reader.onload = function(e){
