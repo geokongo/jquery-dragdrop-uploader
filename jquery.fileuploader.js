@@ -174,25 +174,24 @@
 				var reader = new FileReader();
 
 				//create the image container
-				var imageContainer = document.createElement("div");
-				imageContainer.className = "jquery-uploader-image-container";
+				var itemContainer = document.createElement("div");
+				itemContainer.className = "jquery-uploader-item-container";
 
 				//create the delete button
 				var deleteButton = document.createElement("a");
 				deleteButton.innerHTML = "Remove";
-				deleteButton.id = parentDIV.childNodes[1].childNodes.length;
-				deleteButton.className = "jquery-uploader-image-delete";
+				deleteButton.className = "jquery-uploader-item-delete";
 				deleteButton.href = "#";
 				deleteButton.onclick = removeElement;
-				imageContainer.appendChild(deleteButton);
+				itemContainer.appendChild(deleteButton);
 
 				var image = document.createElement("img");
 				image.file = file;
 				image.className = "jquery-uploader-img-thumbnail";
-				imageContainer.appendChild(image);
+				itemContainer.appendChild(image);
 				
 				//append to the preview div
-				parentDIV.childNodes[1].appendChild(imageContainer);
+				parentDIV.childNodes[1].appendChild(itemContainer);
 
 				reader.onload = function(event){
 
@@ -204,20 +203,31 @@
 				reader.readAsDataURL(file);
 
 		    }
-			//display text
-			else if(file.type.indexOf("text") == 0) {
-				var reader = new FileReader();
+			//display file information for any other file
+			else {
 
-				reader.onload = function(e){
-					Output(
-						"<p><strong>" + file.name + ":</strong></p><pre>"+
-						e.target.result.replace(/</g, "&lt;").replace(/>/g, "&gt;") + "</pre>"
-					);
-				}
-				reader.readAsText(file);
+				//create the image container
+				var itemContainer = document.createElement("div");
+				itemContainer.className = "jquery-uploader-item-container";
+
+				//create the delete button
+				var deleteButton = document.createElement("a");
+				deleteButton.innerHTML = "Remove";
+				deleteButton.className = "jquery-uploader-item-delete";
+				deleteButton.href = "#";
+				deleteButton.onclick = removeElement;
+				itemContainer.appendChild(deleteButton);
+
+				var anyFile = document.createElement("p");
+				var fileName = file.name;
+				fileName = fileName.slice(0,-20);
+				anyFile.innerHTML = "<strong>" + fileName + "<br>" + file.size + "bytes</strong>";
+				itemContainer.appendChild(anyFile);
+
+				//append to the preview div
+				parentDIV.childNodes[1].appendChild(itemContainer);
+
 			}
-
-			console.log(file.type);
 
 		}
 
@@ -231,7 +241,7 @@
 			event.preventDefault();
 			
 			//remove the parent of this div element
-			parentDIV.childNodes[1].removeChild(event.target.parentNode);
+			event.target.parentNode.parentNode.removeChild(event.target.parentNode);
 
 		}
 
