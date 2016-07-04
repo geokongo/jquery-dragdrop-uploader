@@ -182,7 +182,8 @@
 				deleteButton.innerHTML = "Remove";
 				deleteButton.id = parentDIV.childNodes[1].childNodes.length;
 				deleteButton.className = "jquery-uploader-image-delete";
-				deleteButton.href = "";
+				deleteButton.href = "#";
+				deleteButton.onclick = removeElement;
 				imageContainer.appendChild(deleteButton);
 
 				var image = document.createElement("img");
@@ -217,6 +218,20 @@
 			}
 
 			console.log(file.type);
+
+		}
+
+		/**
+		 * This method removes an element from the DOM
+		 * @param {} event The remove anchor click event object
+		 * @return null
+		 */
+		function removeElement(event){
+
+			event.preventDefault();
+			
+			//remove the parent of this div element
+			parentDIV.childNodes[1].removeChild(event.target.parentNode);
 
 		}
 
