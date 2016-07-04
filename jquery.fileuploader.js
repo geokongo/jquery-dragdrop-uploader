@@ -15,9 +15,9 @@
 	var fileuploaderdiv;
 
 	/**
-	 * @var {} The triggered event object
+	 * @var {} The parent div object
 	 */
-	var eventObject;
+	var parentDIV;
 
 	/**
 	 * @var bool true|false This boolean stores whether ajax file upload is supported or not
@@ -139,7 +139,7 @@
 		//file selection
 		function handleFileSelect(event){
 			
-			eventObject = event;
+			parentDIV = event.target.parentNode;
 
 			//cancel event default and hover styling
 			handleDragEvent(event);
@@ -176,12 +176,13 @@
 				//create the image container
 				var imageContainer = document.createElement("div");
 				imageContainer.className = "jquery-uploader-image-container";
-				eventObject.target.parentNode.childNodes[1].appendChild(imageContainer);
 
 				//create the delete button
 				var deleteButton = document.createElement("a");
-				deleteButton.innerHTML = "X";
+				deleteButton.innerHTML = "Remove";
+				deleteButton.id = parentDIV.childNodes[1].childNodes.length;
 				deleteButton.className = "jquery-uploader-image-delete";
+				deleteButton.href = "";
 				imageContainer.appendChild(deleteButton);
 
 				var image = document.createElement("img");
@@ -189,6 +190,8 @@
 				image.className = "jquery-uploader-img-thumbnail";
 				imageContainer.appendChild(image);
 				
+				//append to the preview div
+				parentDIV.childNodes[1].appendChild(imageContainer);
 
 				reader.onload = function(event){
 
