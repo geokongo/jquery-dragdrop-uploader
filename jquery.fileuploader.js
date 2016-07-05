@@ -281,10 +281,29 @@
 
 		}
 
-		//upload JPG files
+		//upload a selected file
 		function UploadFile(file){
-			var xhr = new XMLHttpRequest();
 
+			//create the formdata to append
+			var formData = new FormData();
+			formData.append('file', file);
+
+			$.ajax({
+
+				url: null,
+				type: "POST",
+				data: {},
+				success: function(data){
+					//callbakc
+					alert("Success!");
+				},
+				error: function(err){
+
+				}
+
+			});
+
+/*
 			if (xhr.upload && file.type == "image/jpeg" && file.size <= document.getElementById("MAX_FILE_SIZE").value) {
 				//start upload
 				xhr.open("POST", document.getElementById("upload").action, true);
@@ -309,7 +328,41 @@
 					}
 				}
 			}
+
+*/
 		}
+
+
+
+  		function sendFile(file) {
+        }
+
+        window.onload = function() {
+            var dropzone = document.getElementById("dropzone");
+            dropzone.ondragover = dropzone.ondragenter = function(event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+    
+            dropzone.ondrop = function(event) {
+                event.stopPropagation();
+                event.preventDefault();
+
+                var filesArray = event.dataTransfer.files;
+                for (var i=0; i<filesArray.length; i++) {
+                    sendFile(filesArray[i]);
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
 
 		/**
 		 * This method returns the file size in human readable format
