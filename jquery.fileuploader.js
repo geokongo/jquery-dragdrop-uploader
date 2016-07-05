@@ -118,19 +118,6 @@
 			var inputButtons = document.createElement("div");
 			inputButtons.className = "jquery-uploader-input-buttons";
 
-/*
-			//file input button
-			var inputfield = document.createElement("input");
-			inputfield.type = "file";
-			inputfield.className = "jquery-uploader-file-input-button";
-			inputButtons.appendChild(inputfield);
-			
-			inputfield.name = "files";
-			inputfield.addEventListener("change", handleFileSelect, false);
-
-			//create some space between the butons
-			inputButtons.appendChild(document.createElement("span").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;");
-*/
 			//form submit 
 			var formsubmitbutton = document.createElement("input");
 			formsubmitbutton.type = "submit";
