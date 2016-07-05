@@ -159,7 +159,6 @@
 
 			parentFORM = (event.target.form) ? event.target.form : null;
 
-			console.log(parentFORM);
 			//call method to upload files
 			uploadFiles(event
 				.target
@@ -308,39 +307,32 @@
 		 */
 		function uploadFiles(previews){
 
+			//create the mutlipart-formdata type of form
+			var formData = new FormData();
+
+			//get all the othe form fields
+			if (parentFORM !== null) {
+
+				//loop through all the form elements, adding their name/value pairs
+				for (var i = 0; i < parentFORM.elements.length; i++) {
+
+					var element = parentFORM.elements[i];
+					if (element.name) formData.append(element.name,element.value);
+
+				}
+
+			}
+
 			sendFile();
 			//create a sub-function for sending files
 			function sendFile(){
-
-				//create the formdata to append
-				var formData = new FormData();
-				//formData.append('file', file);
-
-				$.ajax({
-
-					url: "http://localhost:3000/users/ajax",
-					type: "POST",
-					data: {},
-					success: function(data){
-						//callbakc
-						alert("Success!");
-					},
-					error: function(err){
-
-					}
-
-				});
-			
-			}
-
-
-/*
-			if (xhr.upload && file.type == "image/jpeg" && file.size <= document.getElementById("MAX_FILE_SIZE").value) {
+				
+				var reader = new FileReader();
 				//start upload
-				xhr.open("POST", document.getElementById("upload").action, true);
-				xhr.setRequestHeader("X_FILENAME", file.name);
+				xhr.open("POST", "http://localhost:3000/users/ajax", true);
 				xhr.send(file);
 
+/*
 				//create progressbar
 				var o = document.getElementById("progress");
 				var progress = o.appendChild(document.createElement("p"));
@@ -351,16 +343,22 @@
 					var pc = parseInt(100 - (e.loaded / e.total * 100));
 					progress.style.backgroundPosition = pc + "% 0";
 				}, false);
-
+*/
 				//file recieved/failed
 				xhr.onreadystatechange = function(e){
 					if (xhr.readyState == 4) {
 						progress.className = (xhr.status == 200 ? "success" : "failure");
 					}
 				}
+
+				reader.onload = function(evt) {
+				    xhr.send(evt.target.result);
+				};
+				
+				reader.readAsBinaryString(file);
+
 			}
 
-*/
 		}
 
 		/**
