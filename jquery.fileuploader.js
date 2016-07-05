@@ -255,6 +255,7 @@
 
 				var anyFile = document.createElement("p");
 				anyFile.style.padding = "4px";
+				anyFile.file = file;
 				var fileName = (file.name.length >= 20) ? "..."+file.name.substr(file.name.length - 15) : file.name;
 				anyFile.innerHTML =  fileName+ "<br>" + humanReadableFileSize(file.size);
 				itemContainer.appendChild(anyFile);
