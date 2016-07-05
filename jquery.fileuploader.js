@@ -385,10 +385,10 @@
 				}, false);
 	*/
 				//file recieved/failed
-				xhr.onreadystatechange = function(e){
+				xhr.onreadystatechange = function(){
 					if (xhr.readyState == 4) {
-
-						console.log(e.responseText);
+						uploadCOUNT += 1;
+						sendFile();
 						//progress.className = (xhr.status == 200 ? "success" : "failure");
 					}
 				}
