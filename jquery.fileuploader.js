@@ -20,6 +20,11 @@
 	var parentDIV;
 
 	/**
+	 * @var {} The reference to the parent form containing the submit button
+	 */
+	var parentFORM;
+
+	/**
 	 * @var bool true|false This boolean stores whether ajax file upload is supported or not
 	 */
 	var uploadenabled;
@@ -149,8 +154,18 @@
 		 */
 		function handleFormSubmit(event){
 
+			//prevent browser form submission
+			event.preventDefault();
+
+			parentFORM = (event.target.form) ? event.target.form : null;
+
+			console.log(parentFORM);
 			//call method to upload files
-			uploadFiles(event.target.parentNode.parentNode.childNodes[1]);
+			uploadFiles(event
+				.target
+				.parentNode
+				.parentNode
+				.querySelector("div.jquery-fileuploader-filepreviewarea"));
 
 		}
 
@@ -158,6 +173,8 @@
 		function handleFileDrop(event){
 			
 			parentDIV = event.target.parentNode;
+
+			console.log(parentDIV);
 
 			//cancel event default and hover styling
 			handleDragEvent(event);
@@ -221,8 +238,9 @@
 				image.className = "jquery-uploader-img-thumbnail";
 				itemContainer.appendChild(image);
 				
-				//append to the preview div
-				parentDIV.childNodes[1].appendChild(itemContainer);
+				parentDIV
+					.querySelector("div.jquery-fileuploader-filepreviewarea")
+					.appendChild(itemContainer);
 
 				reader.onload = function(event){
 
@@ -261,7 +279,9 @@
 				itemContainer.appendChild(anyFile);
 
 				//append to the preview div
-				parentDIV.childNodes[1].appendChild(itemContainer);
+				parentDIV
+					.querySelector("div.jquery-fileuploader-filepreviewarea")
+					.appendChild(itemContainer);
 
 			}
 
@@ -288,17 +308,17 @@
 		 */
 		function uploadFiles(previews){
 
-			alert(previews.childNodes.length);
+			sendFile();
 			//create a sub-function for sending files
-			function sendFile(file){
+			function sendFile(){
 
 				//create the formdata to append
 				var formData = new FormData();
-				formData.append('file', file);
+				//formData.append('file', file);
 
 				$.ajax({
 
-					url: null,
+					url: "http://localhost:3000/users/ajax",
 					type: "POST",
 					data: {},
 					success: function(data){
