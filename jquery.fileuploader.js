@@ -119,11 +119,13 @@
 			inputButtons.className = "jquery-uploader-input-buttons";
 
 			//form submit 
-			var formsubmitbutton = document.createElement("input");
-			formsubmitbutton.type = "submit";
-			formsubmitbutton.className = "jquery-uploader-file-submit-button";
-			formsubmitbutton.value = "Upload";
-			inputButtons.appendChild(formsubmitbutton);
+			var submitButton = document.createElement("input");
+			submitButton.type = "submit";
+			submitButton.className = "jquery-uploader-file-submit-button";
+			submitButton.value = "Upload";
+			submitButton.onclick = handleFormSubmit;
+
+			inputButtons.appendChild(submitButton);
 			
 			//apend the main filedrop area div
 			fileuploaderdiv.appendChild(inputButtons);
@@ -138,6 +140,18 @@
 			event.preventDefault();
 			draganddroparea.className = (event.type == "dragover" ? "jquery-fileuploader-draganddroparea draganddroparea-hover" : "jquery-fileuploader-draganddroparea");
 		
+		}
+
+		/**
+		 * This method diables the form submit button and calls the method to upload the files
+		 * @param {} event The button click event object
+		 * @return null
+		 */
+		function handleFormSubmit(event){
+
+			//diable submit button
+			event.target.setAttribute("disabled", "disabled");
+
 		}
 
 		//file selection
