@@ -149,8 +149,8 @@
 		 */
 		function handleFormSubmit(event){
 
-			//diable submit button
-			event.target.setAttribute("disabled", "disabled");
+			//call method to upload files
+			uploadFiles(event.target.parentNode.parentNode.childNodes[1]);
 
 		}
 
@@ -281,27 +281,38 @@
 
 		}
 
-		//upload a selected file
-		function UploadFile(file){
+		/**
+		 * This function initiates uploading of all the selected files
+		 * @param {} previews The object reference for the file preview area
+		 * @return null
+		 */
+		function uploadFiles(previews){
 
-			//create the formdata to append
-			var formData = new FormData();
-			formData.append('file', file);
+			alert(previews.childNodes.length);
+			//create a sub-function for sending files
+			function sendFile(file){
 
-			$.ajax({
+				//create the formdata to append
+				var formData = new FormData();
+				formData.append('file', file);
 
-				url: null,
-				type: "POST",
-				data: {},
-				success: function(data){
-					//callbakc
-					alert("Success!");
-				},
-				error: function(err){
+				$.ajax({
 
-				}
+					url: null,
+					type: "POST",
+					data: {},
+					success: function(data){
+						//callbakc
+						alert("Success!");
+					},
+					error: function(err){
 
-			});
+					}
+
+				});
+			
+			}
+
 
 /*
 			if (xhr.upload && file.type == "image/jpeg" && file.size <= document.getElementById("MAX_FILE_SIZE").value) {
@@ -331,38 +342,6 @@
 
 */
 		}
-
-
-
-  		function sendFile(file) {
-        }
-
-        window.onload = function() {
-            var dropzone = document.getElementById("dropzone");
-            dropzone.ondragover = dropzone.ondragenter = function(event) {
-                event.stopPropagation();
-                event.preventDefault();
-            }
-    
-            dropzone.ondrop = function(event) {
-                event.stopPropagation();
-                event.preventDefault();
-
-                var filesArray = event.dataTransfer.files;
-                for (var i=0; i<filesArray.length; i++) {
-                    sendFile(filesArray[i]);
-                }
-            }
-        }
-
-
-
-
-
-
-
-
-
 
 		/**
 		 * This method returns the file size in human readable format
