@@ -147,10 +147,12 @@
 			//fetch FileList object
 			var files = event.target.files || event.dataTransfer.files;
 
-			//loop through all files calling the file preview method
-			for(var file in files){
+			console.log(files.length);
 
-				previewFile(files[file]);
+			if (files){
+
+				//loop through each file in a loop and preview
+			    [].forEach.call(files, previewFile);
 
 			}
 
@@ -158,18 +160,10 @@
 
 		function previewFile(file) {
 
-		/*
-			Output(
-				"<p>File information: <strong>" + file.name +
-				"</strong> type: <strong>" + file.type +
-				"</strong> size: <strong>" + file.size +
-				"</strong> bytes</p>"
-			);
-		*/
 			//check for image file
-		    var imageFile = /^image\//;
+		    var imageFormat = /^image\//;
 		    
-		    if (imageFile.test(file.type)) {
+		    if (imageFormat.test(file.type) !== false) {
 
 				var reader = new FileReader();
 
@@ -183,7 +177,11 @@
 				deleteButton.className = "jquery-uploader-item-delete";
 				deleteButton.href = "#";
 				deleteButton.onclick = removeElement;
-				itemContainer.appendChild(deleteButton);
+				
+				//create the span to hold the text
+				var span = document.createElement("span");
+				span.appendChild(deleteButton);
+				itemContainer.appendChild(span);
 
 				var image = document.createElement("img");
 				image.file = file;
@@ -216,12 +214,15 @@
 				deleteButton.className = "jquery-uploader-item-delete";
 				deleteButton.href = "#";
 				deleteButton.onclick = removeElement;
-				itemContainer.appendChild(deleteButton);
+
+				//create the span to hold the text
+				var span = document.createElement("span");
+				span.appendChild(deleteButton);
+				itemContainer.appendChild(span);
 
 				var anyFile = document.createElement("p");
 				var fileName = file.name;
-				fileName = fileName.slice(0,-20);
-				anyFile.innerHTML = "<strong>" + fileName + "<br>" + file.size + "bytes</strong>";
+				anyFile.innerHTML = file.name.substr(file.name.length - 20) + "<br>" + file.size + " bytes";
 				itemContainer.appendChild(anyFile);
 
 				//append to the preview div
@@ -241,7 +242,7 @@
 			event.preventDefault();
 			
 			//remove the parent of this div element
-			event.target.parentNode.parentNode.removeChild(event.target.parentNode);
+			event.target.parentNode.parentNode.parentNode.removeChild(event.target.parentNode.parentNode);
 
 		}
 
@@ -273,11 +274,6 @@
 					}
 				}
 			}
-		}
-		// output information
-		function Output(msg) {
-			var m = document.getElementById("messages");
-			m.innerHTML = msg + m.innerHTML;
 		}
 
 	};
