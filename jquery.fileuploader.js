@@ -69,7 +69,7 @@
 				//add event listeners to the file drag area
 				draganddroparea.addEventListener("dragover", handleDragEvent);
 				draganddroparea.addEventListener("dragleave", handleDragEvent);
-				draganddroparea.addEventListener("drop", handleFileSelect);
+				draganddroparea.addEventListener("drop", handleFileDrop);
 
 				//display the file drag ared div
 				draganddroparea.style.display = "block";
@@ -78,6 +78,17 @@
 
 			draganddroparea.className = "jquery-fileuploader-draganddroparea";
 			draganddroparea.appendChild(document.createTextNode("Drop files here to upload"));
+
+			draganddroparea.appendChild(document.createElement("br"));
+			draganddroparea.appendChild(document.createTextNode("--or--"));
+			draganddroparea.appendChild(document.createElement("br"));
+			//create form input field
+			var formInput = document.createElement("input");
+			formInput.type = "file";
+			formInput.onchange = handleFileSelect;
+
+			//append to the parent div
+			draganddroparea.appendChild(formInput);
 
 		}
 
@@ -107,17 +118,23 @@
 			var inputButtons = document.createElement("div");
 			inputButtons.className = "jquery-uploader-input-buttons";
 
+/*
 			//file input button
 			var inputfield = document.createElement("input");
 			inputfield.type = "file";
+			inputfield.className = "jquery-uploader-file-input-button";
 			inputButtons.appendChild(inputfield);
 			
 			inputfield.name = "files";
 			inputfield.addEventListener("change", handleFileSelect, false);
 
+			//create some space between the butons
+			inputButtons.appendChild(document.createElement("span").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;");
+*/
 			//form submit 
 			var formsubmitbutton = document.createElement("input");
 			formsubmitbutton.type = "submit";
+			formsubmitbutton.className = "jquery-uploader-file-submit-button";
 			formsubmitbutton.value = "Upload";
 			inputButtons.appendChild(formsubmitbutton);
 			
@@ -132,12 +149,12 @@
 			//prevent the default from occuring and change the styles as appropriate
 			event.stopPropagation();
 			event.preventDefault();
-			event.target.className = (event.type == "dragover" ? "jquery-fileuploader-draganddroparea draganddroparea-hover" : "jquery-fileuploader-draganddroparea");
+			draganddroparea.className = (event.type == "dragover" ? "jquery-fileuploader-draganddroparea draganddroparea-hover" : "jquery-fileuploader-draganddroparea");
 		
 		}
 
 		//file selection
-		function handleFileSelect(event){
+		function handleFileDrop(event){
 			
 			parentDIV = event.target.parentNode;
 
@@ -147,7 +164,22 @@
 			//fetch FileList object
 			var files = event.target.files || event.dataTransfer.files;
 
-			console.log(files.length);
+			if (files){
+
+				//loop through each file in a loop and preview
+			    [].forEach.call(files, previewFile);
+
+			}
+
+		}
+
+		//file selection
+		function handleFileSelect(event){
+			
+			parentDIV = event.target.parentNode.parentNode;
+
+			//fetch FileList object
+			var files = event.target.files || event.dataTransfer.files;
 
 			if (files){
 
