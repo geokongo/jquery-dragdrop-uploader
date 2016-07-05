@@ -221,8 +221,9 @@
 				itemContainer.appendChild(span);
 
 				var anyFile = document.createElement("p");
-				var fileName = file.name;
-				anyFile.innerHTML = file.name.substr(file.name.length - 20) + "<br>" + file.size + " bytes";
+				anyFile.style.padding = "4px";
+				var fileName = (file.name.length >= 20) ? "..."+file.name.substr(file.name.length - 15) : file.name;
+				anyFile.innerHTML =  fileName+ "<br>" + file.size + " bytes";
 				itemContainer.appendChild(anyFile);
 
 				//append to the preview div
