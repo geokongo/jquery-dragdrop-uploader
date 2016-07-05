@@ -173,8 +173,6 @@
 			
 			parentDIV = event.target.parentNode;
 
-			console.log(parentDIV);
-
 			//cancel event default and hover styling
 			handleDragEvent(event);
 
@@ -310,54 +308,67 @@
 			//create the mutlipart-formdata type of form
 			var formData = new FormData();
 
-			//get all the othe form fields
-			if (parentFORM !== null) {
+			//check if there are items to upload
+			if (previews.getElementsByTagName("div").length > 0) {
+ 
+				//get all the othe form fields
+				if (parentFORM !== null) {
 
-				//loop through all the form elements, adding their name/value pairs
-				for (var i = 0; i < parentFORM.elements.length; i++) {
+					//loop through all the form elements, adding their name/value pairs
+					for (var i = 0; i < parentFORM.elements.length; i++) {
 
-					var element = parentFORM.elements[i];
-					if (element.name) formData.append(element.name,element.value);
+						var element = parentFORM.elements[i];
+						if (element.name) formData.append(element.name,element.value);
+
+					}
 
 				}
 
+				sendFile(previews.getElementsByTagName("div")[0].childNodes[1].file);
+
 			}
 
-			sendFile();
-			//create a sub-function for sending files
-			function sendFile(){
-				
-				var reader = new FileReader();
-				//start upload
-				xhr.open("POST", "http://localhost:3000/users/ajax", true);
-				xhr.send(file);
+		}
+
+		/**
+		 * This function sends a file through ajax
+		 * @param File The reference to the file to send
+		 * @return null
+		 */
+		function sendFile(){
+
+			var reader = new FileReader();
+			//start upload
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", "http://localhost:3000/users/ajax", true);
+			//xhr.send(file);
 
 /*
-				//create progressbar
-				var o = document.getElementById("progress");
-				var progress = o.appendChild(document.createElement("p"));
-				progress.appendChild(document.createTextNode("upload" + file.name));
+			//create progressbar
+			var o = document.getElementById("progress");
+			var progress = o.appendChild(document.createElement("p"));
+			progress.appendChild(document.createTextNode("upload" + file.name));
 
-				//progress bar
-				xhr.upload.addEventListener("progress", function(e){
-					var pc = parseInt(100 - (e.loaded / e.total * 100));
-					progress.style.backgroundPosition = pc + "% 0";
-				}, false);
+			//progress bar
+			xhr.upload.addEventListener("progress", function(e){
+				var pc = parseInt(100 - (e.loaded / e.total * 100));
+				progress.style.backgroundPosition = pc + "% 0";
+			}, false);
 */
-				//file recieved/failed
-				xhr.onreadystatechange = function(e){
-					if (xhr.readyState == 4) {
-						progress.className = (xhr.status == 200 ? "success" : "failure");
-					}
+			//file recieved/failed
+			xhr.onreadystatechange = function(e){
+				if (xhr.readyState == 4) {
+					progress.className = (xhr.status == 200 ? "success" : "failure");
 				}
-
-				reader.onload = function(evt) {
-				    xhr.send(evt.target.result);
-				};
-				
-				reader.readAsBinaryString(file);
-
 			}
+
+			reader.onload = function(evt) {
+
+			    xhr.send(evt.target.result);
+
+			};
+			
+			console.log(reader.readAsBinaryString(file));
 
 		}
 
