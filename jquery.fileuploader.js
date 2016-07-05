@@ -25,6 +25,21 @@
 	var parentFORM;
 
 	/**
+	 * @var Integer The index of the current file to be uploaded
+	 */
+	var uploadCOUNT;
+
+	/**
+	 * @var Integer The total  number of files to be uploaded
+	 */
+	var totalFiles;
+
+	/**
+	 * @var {} The object reference to the file priview div
+	 */
+	var filePreviews;
+
+	/**
 	 * @var bool true|false This boolean stores whether ajax file upload is supported or not
 	 */
 	var uploadenabled;
@@ -158,13 +173,14 @@
 			event.preventDefault();
 
 			parentFORM = (event.target.form) ? event.target.form : null;
+			filePreviews = event
+							.target
+							.parentNode
+							.parentNode
+							.querySelector("div.jquery-fileuploader-filepreviewarea")
 
 			//call method to upload files
-			uploadFiles(event
-				.target
-				.parentNode
-				.parentNode
-				.querySelector("div.jquery-fileuploader-filepreviewarea"));
+			uploadFiles(filePreviews);
 
 		}
 
@@ -306,25 +322,16 @@
 		function uploadFiles(previews){
 
 			//create the mutlipart-formdata type of form
-			var formData = new FormData();
+			formDATA = new FormData();
 
 			//check if there are items to upload
 			if (previews.getElementsByTagName("div").length > 0) {
- 
-				//get all the othe form fields
-				if (parentFORM !== null) {
+ 				
+ 				//set the number of files to be uploaded
+ 				totalFiles = previews.getElementsByTagName("div").length;
+ 				uploadCOUNT = 0;
 
-					//loop through all the form elements, adding their name/value pairs
-					for (var i = 0; i < parentFORM.elements.length; i++) {
-
-						var element = parentFORM.elements[i];
-						if (element.name) formData.append(element.name,element.value);
-
-					}
-
-				}
-
-				sendFile(previews.getElementsByTagName("div")[0].childNodes[1].file);
+				sendFile();
 
 			}
 
@@ -332,43 +339,70 @@
 
 		/**
 		 * This function sends a file through ajax
-		 * @param File The reference to the file to send
+		 * @param null
 		 * @return null
 		 */
 		function sendFile(){
 
-			var reader = new FileReader();
-			//start upload
-			var xhr = new XMLHttpRequest();
-			xhr.open("POST", "http://localhost:3000/users/ajax", true);
-			//xhr.send(file);
+			//check that there are still files to be uploaded
+			if(uploadCOUNT < totalFiles){
 
-/*
-			//create progressbar
-			var o = document.getElementById("progress");
-			var progress = o.appendChild(document.createElement("p"));
-			progress.appendChild(document.createTextNode("upload" + file.name));
+				var formDATA = new FormData();
 
-			//progress bar
-			xhr.upload.addEventListener("progress", function(e){
-				var pc = parseInt(100 - (e.loaded / e.total * 100));
-				progress.style.backgroundPosition = pc + "% 0";
-			}, false);
-*/
-			//file recieved/failed
-			xhr.onreadystatechange = function(e){
-				if (xhr.readyState == 4) {
-					progress.className = (xhr.status == 200 ? "success" : "failure");
+				//get all the othe form fields
+				if (parentFORM !== null) {
+
+					//loop through all the form elements, adding their name/value pairs
+					for (var i = 0; i < parentFORM.elements.length; i++) {
+
+						var element = parentFORM.elements[i];
+						if (element.name) formDATA.append(element.name,element.value);
+
+					}
+
 				}
+
+
+				var file = filePreviews.getElementsByTagName("div")[uploadCOUNT].childNodes[1].file
+				var reader = new FileReader();
+
+				//start upload
+				var xhr = new XMLHttpRequest();
+				xhr.open("POST", "http://localhost:3000/users/ajax", true);
+
+				//xhr.send(file);
+
+	/*
+				//create progressbar
+				var o = document.getElementById("progress");
+				var progress = o.appendChild(document.createElement("p"));
+				progress.appendChild(document.createTextNode("upload" + file.name));
+
+				//progress bar
+				xhr.upload.addEventListener("progress", function(e){
+					var pc = parseInt(100 - (e.loaded / e.total * 100));
+					progress.style.backgroundPosition = pc + "% 0";
+				}, false);
+	*/
+				//file recieved/failed
+				xhr.onreadystatechange = function(e){
+					if (xhr.readyState == 4) {
+
+						console.log(e.responseText);
+						//progress.className = (xhr.status == 200 ? "success" : "failure");
+					}
+				}
+
+				reader.onload = function(evt) {
+
+					formDATA.append("file",evt.target.result);
+				    xhr.send(formDATA);
+
+				};
+				
+				reader.readAsBinaryString(file);
+
 			}
-
-			reader.onload = function(evt) {
-
-			    xhr.send(evt.target.result);
-
-			};
-			
-			console.log(reader.readAsBinaryString(file));
 
 		}
 
@@ -401,6 +435,7 @@
 
 		    return bytes.toFixed(1)+' '+units[u];
 		}
+
 	};
 
 }(jQuery));
