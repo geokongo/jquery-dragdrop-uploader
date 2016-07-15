@@ -292,19 +292,22 @@
 				//create the delete button
 				var deleteButton = document.createElement("div");
 				deleteButton.className = "jquery-uploader-item-close";
-				deleteButton.href = "#";
 				deleteButton.onclick = removeElement;
 				itemSpan.appendChild(deleteButton);
 
-				var anyFile = document.createElement("div");
-				anyFile.style.padding = "4px";
+				//compose the file name
+				var fileName = file.name + " " + humanReadableFileSize(file.size);
+				fileName =  (fileName.length >= 20) ? "..." + fileName.substr(fileName.length - 20) : fileName;
+
+				//insert file info
+				itemSpan.appendChild(document.createTextNode(fileName));
+
+				var anyFile = document.createElement("p");
+				anyFile.style.display = "none";
 				anyFile.file = file;
 				anyFile.id = "element-to-upload";
 
-				//shorten filename if it's long for display
-				var fileName = (file.name.length >= 20) ? "..."+file.name.substr(file.name.length - 15) : file.name;
-				anyFile.innerHTML =  fileName + " " + humanReadableFileSize(file.size);
-				itemSpan.appendChild(anyFile);
+				itemContainer.appendChild(anyFile);
 				
 				
 
