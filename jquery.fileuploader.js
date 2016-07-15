@@ -372,10 +372,10 @@
 			formDATA = new FormData();
 
 			//check if there are items to upload
-			if (previews.getElementsByTagName("div").length > 0) {
+			if (previews.childNodes.length > 0) {
  				
  				//set the number of files to be uploaded
- 				totalFiles = previews.getElementsByTagName("div").length;
+ 				totalFiles = previews.childNodes.length;
  				uploadCOUNT = 0;
 
 				sendFile();
@@ -393,7 +393,7 @@
 
 			//check that there are still files to be uploaded
 			if(uploadCOUNT < totalFiles){
-
+				console.log(uploadCOUNT, totalFiles);
 				var formDATA = new FormData();
 
 				//get all the other form fields
@@ -409,30 +409,23 @@
 
 				}
 
-				var itemContainer = filePreviews.getElementsByTagName("div")[uploadCOUNT]; //getElementById("element-to-upload");
+				var itemContainer = filePreviews.childNodes[uploadCOUNT]; //getElementById("element-to-upload");
 				var fileToUpload = itemContainer.querySelector("#element-to-upload");
 
+				//set the progress bar
+				var bar = itemContainer.querySelector(".jquery-uploader-progress-bar-placeholder");
+				bar.className += " jquery-uploader-progress-bar";
+				bar.style.width = "50%";
+
+				//change the submit button text to uploading
+				parentFORM.querySelector("input[type=submit]").value = "Uploading...";
+				
 				//start upload
 				var xhr = new XMLHttpRequest();
 				xhr.open("POST", "http://localhost:3000/users/ajax", true);
 				formDATA.append("file",fileToUpload.file, fileToUpload.file.name);
 				xhr.send(formDATA);
 
-				//change the submit button text to uploading
-				parentFORM.querySelector("input[type=submit]").value = "Uploading...";
-
-	/*
-				//create progressbar
-				var o = document.getElementById("progress");
-				var progress = o.appendChild(document.createElement("p"));
-				progress.appendChild(document.createTextNode("upload" + file.name));
-
-				//progress bar
-				xhr.upload.addEventListener("progress", function(e){
-					var pc = parseInt(100 - (e.loaded / e.total * 100));
-					progress.style.backgroundPosition = pc + "% 0";
-				}, false);
-	*/
 				//file recieved/failed
 				xhr.onreadystatechange = function(){
 
@@ -443,9 +436,18 @@
 							uploadCOUNT += 1;
 
 							//set the progress bar
-							var progressbar = itemContainer.querySelector(".jquery-uploader-item-delete");
-							progressbar.parentNode.style.opacity = "1";
-							progressbar.innerHTML = "Uploaded!";
+							var deleteButton = itemContainer.querySelector(".jquery-uploader-img-delete");
+							
+							if (deleteButton) {
+
+								deleteButton.parentNode.style.opacity = "1";
+								deleteButton.innerHTML = "Uploaded!";	
+
+							} 
+				
+							bar.className += " jquery-uploader-progress-bar-complete";
+							bar.style.width = "100%";
+
 
 							//send the next file
 							sendFile();
@@ -453,9 +455,11 @@
 						} 
 						else {
 
-							var progressbar = itemContainer.querySelector(".jquery-uploader-item-delete");
-							progressbar.parentNode.style.opacity = "1";
-							progressbar.innerHTML = "Failed!!";
+
+							//set the progress bar
+							var deleteButton = itemContainer.querySelector(".jquery-uploader-img-delete");
+							deleteButton.parentNode.style.opacity = "1";
+							deleteButton.innerHTML = "Failed!";
 
 							console.log(xhr.responseText);
 						}
