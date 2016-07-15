@@ -192,12 +192,15 @@
 
 		}
 
-		//file selection
+		/**
+		 * This function handles file drop event by passing the dropped file(s) for preview
+		 * @param {} event The file drop event object
+		 */
 		function handleFileDrop(event){
 			
 			parentDIV = event.target.parentNode;
 
-			//cancel event default and hover styling
+			//cancel event default, hover styling and prevent default
 			handleDragEvent(event);
 
 			//fetch FileList object
@@ -256,6 +259,7 @@
 
 				var image = document.createElement("img");
 				image.file = file;
+				image.id = "element-to-upload";
 				image.className = "jquery-uploader-img-thumbnail";
 				itemContainer.appendChild(image);
 				
@@ -265,7 +269,6 @@
 
 				reader.onload = function(event){
 
-					//var string = "<img width='200px' src='" + e.target.result + "'/>";
 					image.src = event.target.result;
 				
 				}
@@ -295,6 +298,9 @@
 				var anyFile = document.createElement("p");
 				anyFile.style.padding = "4px";
 				anyFile.file = file;
+				anyFile.id = "element-to-upload";
+
+				//shorten filename if it's long for display
 				var fileName = (file.name.length >= 20) ? "..."+file.name.substr(file.name.length - 15) : file.name;
 				anyFile.innerHTML =  fileName+ "<br>" + humanReadableFileSize(file.size);
 				itemContainer.appendChild(anyFile);
@@ -309,7 +315,7 @@
 		}
 
 		/**
-		 * This method removes an element from the DOM
+		 * This method removes an uploaded element from the previewarea
 		 * @param {} event The remove anchor click event object
 		 * @return null
 		 */
@@ -357,7 +363,7 @@
 
 				var formDATA = new FormData();
 
-				//get all the othe form fields
+				//get all the other form fields
 				if (parentFORM !== null) {
 
 					//loop through all the form elements, adding their name/value pairs
@@ -370,8 +376,8 @@
 
 				}
 
-
-				var file = filePreviews.getElementsByTagName("div")[uploadCOUNT].childNodes[1].file
+				var itemContainer = filePreviews.getElementsByTagName("div")[uploadCOUNT]; //getElementById("element-to-upload");
+				var fileToUpload = itemContainer.querySelector("#element-to-upload");
 				var reader = new FileReader();
 
 				//start upload
@@ -399,7 +405,8 @@
 						if (xhr.status == 200) {
 
 							uploadCOUNT += 1;
-							sendFile();
+							//sendFile();
+							console.log("Success");
 
 						} 
 						else {
@@ -409,6 +416,11 @@
 					}
 				}
 
+				formDATA.append("file",fileToUpload.file, fileToUpload.file.name);
+				xhr.send(formDATA);
+
+
+/*
 				reader.onload = function(evt) {
 
 					formDATA.append("file",evt.target.result);
@@ -417,7 +429,7 @@
 				};
 				
 				reader.readAsBinaryString(file);
-
+*/
 			}
 
 		}
