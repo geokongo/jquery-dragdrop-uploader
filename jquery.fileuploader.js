@@ -393,7 +393,7 @@
 
 			//check that there are still files to be uploaded
 			if(uploadCOUNT < totalFiles){
-				console.log(uploadCOUNT, totalFiles);
+
 				var formDATA = new FormData();
 
 				//get all the other form fields
@@ -416,6 +416,10 @@
 				var bar = itemContainer.querySelector(".jquery-uploader-progress-bar-placeholder");
 				bar.className += " jquery-uploader-progress-bar";
 				bar.style.width = "50%";
+
+				//set progress animation
+				var prog = itemContainer.querySelector(".jquery-uploader-progress");
+				prog.className += " active";
 
 				//change the submit button text to uploading
 				parentFORM.querySelector("input[type=submit]").value = "Uploading...";
@@ -444,10 +448,13 @@
 								deleteButton.innerHTML = "Uploaded!";	
 
 							} 
-				
-							bar.className += " jquery-uploader-progress-bar-complete";
+							//set progress to 100% and change style class
+							bar.className = "jquery-uploader-progress-bar-complete";
 							bar.style.width = "100%";
 
+							//stop animation
+							var prog = itemContainer.querySelector(".jquery-uploader-progress");
+							prog.className = removeClass(prog.className, "active");
 
 							//send the next file
 							sendFile();
@@ -504,4 +511,23 @@
 
 	};
 
+	/**
+	 *This method removes classes from an element
+	 *@param string current The string containing the classes
+	 *@param string remove The particular class to remove
+	 *@return string The final class string after remove
+	 */
+	function removeClass(current, remove){
+		var newclass = "";
+		var classList = current.split(" ");
+
+		//loop to remove this particular class
+		for(var i = 0; i < classList.length; i++){
+			if(classList[i].trim() !== remove){
+				newclass += classList[i].trim() + " ";
+			}
+		}
+
+		return newclass;
+	};
 }(jQuery));
