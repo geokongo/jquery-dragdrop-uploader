@@ -387,8 +387,16 @@
 				//file recieved/failed
 				xhr.onreadystatechange = function(){
 					if (xhr.readyState == 4) {
-						uploadCOUNT += 1;
-						sendFile();
+
+						if (xhr.status == 200) {
+
+							uploadCOUNT += 1;
+							sendFile();
+
+						} 
+						else {
+							console.log(xhr.responseText);
+						}
 						//progress.className = (xhr.status == 200 ? "success" : "failure");
 					}
 				}
