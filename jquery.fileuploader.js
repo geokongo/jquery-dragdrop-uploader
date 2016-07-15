@@ -383,8 +383,11 @@
 				//start upload
 				var xhr = new XMLHttpRequest();
 				xhr.open("POST", "http://localhost:3000/users/ajax", true);
+				formDATA.append("file",fileToUpload.file, fileToUpload.file.name);
+				xhr.send(formDATA);
 
-				//xhr.send(file);
+				//change the submit button text to uploading
+				parentFORM.querySelector("input[type=submit]").value = "Uploading...";
 
 	/*
 				//create progressbar
@@ -416,21 +419,9 @@
 					}
 				}
 
-				formDATA.append("file",fileToUpload.file, fileToUpload.file.name);
-				xhr.send(formDATA);
 
-
-/*
-				reader.onload = function(evt) {
-
-					formDATA.append("file",evt.target.result);
-				    xhr.send(formDATA);
-
-				};
-				
-				reader.readAsBinaryString(file);
-*/
 			}
+			else parentFORM.querySelector("input[type=submit]").value = "Uploaded!";
 
 		}
 
