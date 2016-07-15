@@ -405,8 +405,8 @@
 						if (xhr.status == 200) {
 
 							uploadCOUNT += 1;
-							//sendFile();
-							console.log("Success");
+							console.log("success");
+							sendFile();
 
 						} 
 						else {
