@@ -475,7 +475,12 @@
 				}
 
 			}
-			else parentFORM.querySelector("input[type=submit]").value = "Uploaded!";
+			else{
+
+				parentFORM.querySelector("input[type=submit]").value = "Uploaded!";	
+				parentFORM.querySelector("input[type=submit]").setAttribute("disabled", "disabled");
+
+			} 
 
 		}
 
