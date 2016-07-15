@@ -266,14 +266,18 @@
 				//create the progress bar placeholder
 				var progress = document.createElement("div");
 				progress.className = "jquery-uploader-progress";
+				
+				//compose the file name
+				var fileName = file.name + " " + humanReadableFileSize(file.size);
+				fileName =  (fileName.length >= 20) ? "..." + fileName.substr(fileName.length - 20) : fileName;
 
 				var progressbar = document.createElement("div");
-				progressbar.className = "jquery-uploader-progress-bar";
+				progressbar.className = "jquery-uploader-progress-bar-placeholder";
 				progressbar.setAttribute("role", "progressbar");
-				progressbar.setAttribute("aria-valuenow", "70");
+				progressbar.setAttribute("aria-valuenow", "0");
 				progressbar.setAttribute("aria-valuemin", "0");
 				progressbar.setAttribute("aria-valuemax", "100");
-				progressbar.innerHTML = "70%";
+				progressbar.innerHTML = fileName;
 				progressbar.style.width = "100%";
 
 				progress.appendChild(progressbar);
@@ -318,12 +322,11 @@
 				//insert file info
 				var progressbar = document.createElement("div");
 				progressbar.innerHTML = fileName;
-				progressbar.className = "jquery-uploader-progress-bar";
+				progressbar.className = "jquery-uploader-progress-bar-placeholder";
 				progressbar.setAttribute("role", "progressbar");
-				progressbar.setAttribute("aria-valuenow", "70");
+				progressbar.setAttribute("aria-valuenow", "0");
 				progressbar.setAttribute("aria-valuemin", "0");
 				progressbar.setAttribute("aria-valuemax", "100");
-				progressbar.innerHTML = "70%";
 				progressbar.style.width = "100%";
 				itemSpan.appendChild(progressbar);
 
