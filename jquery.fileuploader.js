@@ -2,7 +2,7 @@
  * jQuery FileUploader Plugin v0.0.1
  * https://github.com/GeoffreyOliver/jquery-fileuploader
  * 
- * This plugin enables you to upload image files, text files e.t.c to the server through drag and drop
+ * This plugin enables you to upload image files, text files e.t.c to the server through drag and drop without page relaod
  * 
  * Copyright 2015 - 2020 Geoffrey Bans
  * Released under the MIT license
@@ -10,7 +10,7 @@
 (function($){
 
 	/**
-	 * @var {} The object reference to the filedrop area
+	 * @var {} The object reference to the document element the user attached the plugin to.
 	 */
 	var fileuploaderdiv;
 
@@ -43,9 +43,17 @@
 	 * @var bool true|false This boolean stores whether ajax file upload is supported or not
 	 */
 	var uploadenabled;
+
+	/**
+	 * @var {} The object reference to the filepreview div
+	 */
 	var draganddroparea;
 
-	//plugin definition
+	/**
+	 * This is the plugin definition and code required to upload files to the server.
+	 * Begins by extending the $.fn object
+	 * @param {} options The plugin configuration options provided by the user
+	 */
 	$.fn.fileuploader = function(options){
 		
 		//set the object reference to the form holder
@@ -62,7 +70,7 @@
 		//setting the default options
 		var settings = $.extend({
 			uploadurl: null,
-			multiple: false,
+			multiple: true,
 			datatype: null,
 			maxsize: null,
 			instantupload: false
