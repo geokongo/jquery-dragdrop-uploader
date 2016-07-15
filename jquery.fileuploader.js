@@ -310,6 +310,7 @@
 					.querySelector("div.jquery-fileuploader-filepreviewarea")
 					.appendChild(itemContainer);
 
+
 			}
 
 		}
@@ -378,7 +379,6 @@
 
 				var itemContainer = filePreviews.getElementsByTagName("div")[uploadCOUNT]; //getElementById("element-to-upload");
 				var fileToUpload = itemContainer.querySelector("#element-to-upload");
-				var reader = new FileReader();
 
 				//start upload
 				var xhr = new XMLHttpRequest();
@@ -408,7 +408,13 @@
 						if (xhr.status == 200) {
 
 							uploadCOUNT += 1;
-							console.log("success");
+
+							//set the progress bar
+							var progressbar = itemContainer.querySelector(".jquery-uploader-item-delete");
+							progressbar.parentNode.style.opacity = "1";
+							progressbar.innerHTML = "Uploaded!";
+
+							//send the next file
 							sendFile();
 
 						} 
