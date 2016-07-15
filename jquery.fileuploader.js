@@ -403,6 +403,7 @@
 	*/
 				//file recieved/failed
 				xhr.onreadystatechange = function(){
+
 					if (xhr.readyState == 4) {
 
 						if (xhr.status == 200) {
@@ -419,12 +420,16 @@
 
 						} 
 						else {
+
+							var progressbar = itemContainer.querySelector(".jquery-uploader-item-delete");
+							progressbar.parentNode.style.opacity = "1";
+							progressbar.innerHTML = "Failed!!";
+
 							console.log(xhr.responseText);
 						}
 						//progress.className = (xhr.status == 200 ? "success" : "failure");
 					}
 				}
-
 
 			}
 			else parentFORM.querySelector("input[type=submit]").value = "Uploaded!";
