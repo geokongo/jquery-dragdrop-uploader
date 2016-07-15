@@ -242,30 +242,30 @@
 				var reader = new FileReader();
 
 				//create the image container
-				var itemContainer = document.createElement("div");
-				itemContainer.className = "jquery-uploader-item-container";
+				var imgContainer = document.createElement("div");
+				imgContainer.className = "jquery-uploader-img-container";
 
 				//create the delete button
 				var deleteButton = document.createElement("a");
 				deleteButton.innerHTML = "Remove";
-				deleteButton.className = "jquery-uploader-item-delete";
+				deleteButton.className = "jquery-uploader-img-delete";
 				deleteButton.href = "#";
 				deleteButton.onclick = removeElement;
 				
 				//create the span to hold the text
 				var span = document.createElement("span");
 				span.appendChild(deleteButton);
-				itemContainer.appendChild(span);
+				imgContainer.appendChild(span);
 
 				var image = document.createElement("img");
 				image.file = file;
 				image.id = "element-to-upload";
 				image.className = "jquery-uploader-img-thumbnail";
-				itemContainer.appendChild(image);
+				imgContainer.appendChild(image);
 				
 				parentDIV
 					.querySelector("div.jquery-fileuploader-filepreviewarea")
-					.appendChild(itemContainer);
+					.appendChild(imgContainer);
 
 				reader.onload = function(event){
 
@@ -283,6 +283,32 @@
 				var itemContainer = document.createElement("div");
 				itemContainer.className = "jquery-uploader-item-container";
 
+
+				//create the span to hold the item
+				var itemSpan = document.createElement("div");
+				itemSpan.className = "jquery-uploader-item-content";
+				itemContainer.appendChild(itemSpan);
+				
+				//create the delete button
+				var deleteButton = document.createElement("div");
+				deleteButton.className = "jquery-uploader-item-close";
+				deleteButton.href = "#";
+				deleteButton.onclick = removeElement;
+				itemSpan.appendChild(deleteButton);
+
+				var anyFile = document.createElement("div");
+				anyFile.style.padding = "4px";
+				anyFile.file = file;
+				anyFile.id = "element-to-upload";
+
+				//shorten filename if it's long for display
+				var fileName = (file.name.length >= 20) ? "..."+file.name.substr(file.name.length - 15) : file.name;
+				anyFile.innerHTML =  fileName + " " + humanReadableFileSize(file.size);
+				itemSpan.appendChild(anyFile);
+				
+				
+
+/*
 				//create the delete button
 				var deleteButton = document.createElement("a");
 				deleteButton.innerHTML = "Remove";
@@ -304,7 +330,7 @@
 				var fileName = (file.name.length >= 20) ? "..."+file.name.substr(file.name.length - 15) : file.name;
 				anyFile.innerHTML =  fileName+ "<br>" + humanReadableFileSize(file.size);
 				itemContainer.appendChild(anyFile);
-
+*/
 				//append to the preview div
 				parentDIV
 					.querySelector("div.jquery-fileuploader-filepreviewarea")
