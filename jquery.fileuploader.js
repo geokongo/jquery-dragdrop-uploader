@@ -517,10 +517,10 @@
 	};
 
 	/**
-	 *This method removes classes from an element
-	 *@param string current The string containing the classes
-	 *@param string remove The particular class to remove
-	 *@return string The final class string after remove
+	 * This method removes classes from an element
+	 * @param string current The string containing the classes
+	 * @param string remove The particular class to remove
+	 * @return string The final class string after remove
 	 */
 	function removeClass(current, remove){
 		var newclass = "";
