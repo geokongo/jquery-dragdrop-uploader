@@ -262,7 +262,23 @@
 				image.id = "element-to-upload";
 				image.className = "jquery-uploader-img-thumbnail";
 				imgContainer.appendChild(image);
-				
+
+				//create the progress bar placeholder
+				var progress = document.createElement("div");
+				progress.className = "jquery-uploader-progress";
+
+				var progressbar = document.createElement("div");
+				progressbar.className = "jquery-uploader-progress-bar";
+				progressbar.setAttribute("role", "progressbar");
+				progressbar.setAttribute("aria-valuenow", "70");
+				progressbar.setAttribute("aria-valuemin", "0");
+				progressbar.setAttribute("aria-valuemax", "100");
+				progressbar.innerHTML = "70%";
+				progressbar.style.width = "100%";
+
+				progress.appendChild(progressbar);
+				imgContainer.appendChild(progress);
+			
 				parentDIV
 					.querySelector("div.jquery-fileuploader-filepreviewarea")
 					.appendChild(imgContainer);
@@ -286,7 +302,7 @@
 
 				//create the span to hold the item
 				var itemSpan = document.createElement("div");
-				itemSpan.className = "jquery-uploader-item-content";
+				itemSpan.className = "jquery-uploader-item-content jquery-uploader-progress";
 				itemContainer.appendChild(itemSpan);
 				
 				//create the delete button
@@ -300,7 +316,16 @@
 				fileName =  (fileName.length >= 20) ? "..." + fileName.substr(fileName.length - 20) : fileName;
 
 				//insert file info
-				itemSpan.appendChild(document.createTextNode(fileName));
+				var progressbar = document.createElement("div");
+				progressbar.innerHTML = fileName;
+				progressbar.className = "jquery-uploader-progress-bar";
+				progressbar.setAttribute("role", "progressbar");
+				progressbar.setAttribute("aria-valuenow", "70");
+				progressbar.setAttribute("aria-valuemin", "0");
+				progressbar.setAttribute("aria-valuemax", "100");
+				progressbar.innerHTML = "70%";
+				progressbar.style.width = "100%";
+				itemSpan.appendChild(progressbar);
 
 				var anyFile = document.createElement("p");
 				anyFile.style.display = "none";
@@ -309,31 +334,6 @@
 
 				itemContainer.appendChild(anyFile);
 				
-				
-
-/*
-				//create the delete button
-				var deleteButton = document.createElement("a");
-				deleteButton.innerHTML = "Remove";
-				deleteButton.className = "jquery-uploader-item-delete";
-				deleteButton.href = "#";
-				deleteButton.onclick = removeElement;
-
-				//create the span to hold the text
-				var span = document.createElement("span");
-				span.appendChild(deleteButton);
-				itemContainer.appendChild(span);
-
-				var anyFile = document.createElement("p");
-				anyFile.style.padding = "4px";
-				anyFile.file = file;
-				anyFile.id = "element-to-upload";
-
-				//shorten filename if it's long for display
-				var fileName = (file.name.length >= 20) ? "..."+file.name.substr(file.name.length - 15) : file.name;
-				anyFile.innerHTML =  fileName+ "<br>" + humanReadableFileSize(file.size);
-				itemContainer.appendChild(anyFile);
-*/
 				//append to the preview div
 				parentDIV
 					.querySelector("div.jquery-fileuploader-filepreviewarea")
