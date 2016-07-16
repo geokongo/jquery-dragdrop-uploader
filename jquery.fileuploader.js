@@ -70,7 +70,7 @@
 		//setting the default options
 		var settings = $.extend({
 			uploadurl: null,
-			multiple: true,
+			multiple: false,
 			filetype: null,
 			maxsize: null,
 			filecount: null,
