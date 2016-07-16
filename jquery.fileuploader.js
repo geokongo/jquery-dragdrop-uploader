@@ -56,6 +56,16 @@
 	 */
 	$.fn.fileuploader = function(options){
 		
+		//setting the default options
+		var settings = $.extend({
+			uploadurl: null,
+			multiple: false,
+			filetype: null,
+			maxsize: null,
+			filecount: null,
+			instantupload: false
+		}, options);
+		
 		//set the object reference to the form holder
 		fileuploaderdiv = $(this)[0];
 
@@ -67,22 +77,13 @@
 		createFilePreviewArea();
 		createInputButtons();
 
-		//setting the default options
-		var settings = $.extend({
-			uploadurl: null,
-			multiple: false,
-			filetype: null,
-			maxsize: null,
-			filecount: null,
-			instantupload: false
-		}, options);
-
 		/**
 		 * This method sets the drag and drop area for file uploads
 		 * @param null 
 		 * @return null
 		 */
 		function createDragAndDropArea(){
+		console.log(settings);
 
 			draganddroparea = document.createElement("div");
 			
