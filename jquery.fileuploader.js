@@ -65,7 +65,7 @@
 			filecount: null,
 			instantupload: false
 		}, options);
-		
+
 		//set the object reference to the form holder
 		fileuploaderdiv = $(this)[0];
 
@@ -83,7 +83,6 @@
 		 * @return null
 		 */
 		function createDragAndDropArea(){
-		console.log(settings);
 
 			draganddroparea = document.createElement("div");
 			
@@ -115,7 +114,13 @@
 			//create form input field
 			var formInput = document.createElement("input");
 			formInput.type = "file";
+
+			if (settings.multiple === true) {
+				formInput.setAttribute("multiple", "true");
+			} 
+
 			formInput.onchange = handleFileSelect;
+			formInput.addEventListener("drop",handleFileDrop);
 
 			//append to the parent div
 			draganddroparea.appendChild(formInput);
