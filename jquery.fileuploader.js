@@ -83,10 +83,14 @@
 		 * @return null
 		 */
 		function createDragAndDropArea(){
-
-			draganddroparea = document.createElement("div");
+			
+			var fileErrorMessages = document.createElement("p");
+			fileErrorMessages.style.color = "red";
+			fileErrorMessages.className = "jquery-fileuploader-error-message";
+			fileuploaderdiv.appendChild(fileErrorMessages)
 			
 			//append to the main fileuploaderdiv div
+			draganddroparea = document.createElement("div");
 			fileuploaderdiv.appendChild(draganddroparea);
 			
 			//is XHR2 available?
@@ -120,7 +124,6 @@
 			} 
 
 			formInput.onchange = handleFileSelect;
-			formInput.addEventListener("drop",handleFileDrop);
 
 			//append to the parent div
 			draganddroparea.appendChild(formInput);
@@ -159,6 +162,11 @@
 			submitButton.className = "jquery-uploader-file-submit-button";
 			submitButton.value = "Upload";
 			submitButton.onclick = handleFormSubmit;
+
+			//diable submit button if instant upload is set to true	
+			if (settings.instantupload === true) {
+				submitButton.setAttribute("disabled", "disabled");
+			}
 
 			inputButtons.appendChild(submitButton);
 			
@@ -243,6 +251,7 @@
 
 			//check for image file
 		    var imageFormat = /^image\//;
+		    var dataFile;
 		    
 		    if (imageFormat.test(file.type) !== false) {
 
@@ -289,15 +298,10 @@
 
 				progress.appendChild(progressbar);
 				imgContainer.appendChild(progress);
+				dataFile = imgContainer;
 			
-				parentDIV
-					.querySelector("div.jquery-fileuploader-filepreviewarea")
-					.appendChild(imgContainer);
-
 				reader.onload = function(event){
-
 					image.src = event.target.result;
-				
 				}
 
 				reader.readAsDataURL(file);
@@ -343,12 +347,149 @@
 				anyFile.id = "element-to-upload";
 
 				itemContainer.appendChild(anyFile);
-				
-				//append to the preview div
-				parentDIV
-					.querySelector("div.jquery-fileuploader-filepreviewarea")
-					.appendChild(itemContainer);
+				dataFile = itemContainer;
 
+			}
+
+			//check for file size
+			if (settings.maxsize !== null) {
+
+				//check if the file excedes allowed size
+				if (file.size > (settings.maxsize * 1000)) {
+					parentDIV.querySelector(".jquery-fileuploader-error-message").innerHTML = "File too large!";
+				} 
+				else {
+
+					//check file type
+					if (settings.filetype !== null) {
+
+						if (settings.filetype == 'image') {
+
+						} 
+						else {
+
+						}
+
+					} 
+					else {
+
+						//check if multiple files is allowed
+						if (settings.multiple === true) {
+
+							//check if max number of files is set
+							if (settings.filecount !== null) {
+
+								if (parentDIV.querySelector("div.jquery-fileuploader-filepreviewarea").childNodes.length >= settings.filecount) {
+									//replace the first element
+									parentDIV
+										.querySelector("div.jquery-fileuploader-filepreviewarea")
+										.insertBefore(dataFile, parentDIV.querySelector("div.jquery-fileuploader-filepreviewarea").firstChild);
+
+									parentDIV.querySelector("div.jquery-fileuploader-filepreviewarea")
+										.removeChild(
+											parentDIV
+												.querySelector("div.jquery-fileuploader-filepreviewarea")
+												.lastChild);
+								} 
+								else {
+									//append element to preview area
+									parentDIV
+										.querySelector("div.jquery-fileuploader-filepreviewarea")
+										.appendChild(dataFile);
+
+								}
+
+							} 
+							else {
+								//append element to preview area
+								parentDIV
+									.querySelector("div.jquery-fileuploader-filepreviewarea")
+									.appendChild(dataFile);
+
+							}
+
+						} 
+						else {
+							
+							var childs = parentDIV.querySelector("div.jquery-fileuploader-filepreviewarea").childNodes;
+							
+							//remove items that are already present
+							$.each(childs,function(key, child){
+								child.parentNode.removeChild(child);
+							});
+
+							parentDIV
+								.querySelector("div.jquery-fileuploader-filepreviewarea")
+								.appendChild(dataFile);
+
+						}
+
+					}
+
+				}
+
+			} 
+			else {
+				//check file type
+				if (settings.filetype !== null) {
+
+
+				} 
+				else {
+
+					//check if multiple files is allowed
+					if (settings.multiple === true) {
+
+						//check if max number of files is set
+						if (settings.filecount !== null) {
+
+							if (parentDIV.querySelector("div.jquery-fileuploader-filepreviewarea").childNodes.length >= settings.filecount) {
+								//replace the first element
+								parentDIV
+									.querySelector("div.jquery-fileuploader-filepreviewarea")
+									.insertBefore(dataFile, parentDIV.querySelector("div.jquery-fileuploader-filepreviewarea").firstChild);
+
+								parentDIV.querySelector("div.jquery-fileuploader-filepreviewarea")
+									.removeChild(
+										parentDIV
+											.querySelector("div.jquery-fileuploader-filepreviewarea")
+											.lastChild);
+
+							} 
+							else {
+								//append element to preview area
+								parentDIV
+									.querySelector("div.jquery-fileuploader-filepreviewarea")
+									.appendChild(dataFile);
+
+							}
+
+						} 
+						else {
+							//append element to preview area
+							parentDIV
+								.querySelector("div.jquery-fileuploader-filepreviewarea")
+								.appendChild(dataFile);
+
+						}
+
+					} 
+					else {
+						
+						var childs = parentDIV.querySelector("div.jquery-fileuploader-filepreviewarea").childNodes;
+						
+						//remove items that are already present
+						$.each(childs,function(key, child){
+							child.parentNode.removeChild(child);
+						});
+
+						parentDIV
+							.querySelector("div.jquery-fileuploader-filepreviewarea")
+							.appendChild(dataFile);
+
+					}
+
+				}
 
 			}
 
