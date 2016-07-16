@@ -71,8 +71,9 @@
 		var settings = $.extend({
 			uploadurl: null,
 			multiple: true,
-			datatype: null,
+			filetype: null,
 			maxsize: null,
+			filecount: null,
 			instantupload: false
 		}, options);
 
