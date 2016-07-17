@@ -4,7 +4,7 @@ This is a plugin based on jQuery and JavaScript that enables you to upload any t
 
 The files are uploaded via ajax through drag and drop. It is lightweight and only requires the inclusion of one file and default configuration.
 
-### Features ###
+### Features 
 * [Drag and Drop Files to Upload](#draganddrop)
 * [Upload Multiple Files](#multiplefiles)
 * [Multiple Language Support](#anyserver)
@@ -13,9 +13,9 @@ The files are uploaded via ajax through drag and drop. It is lightweight and onl
 * [Limit the Type of Files to Upload](#filetypelimit)
 * [Instant File to Upload](#instantupload)
 
-## [Live Demo](https://GeoffreyOliver.github.io/jquery.fileuploader/index.html) ###
+## [Live Demo](https://GeoffreyOliver.github.io/jquery.fileuploader/index.html)
 
-## Example Usage ##
+## Example Usage
 
 The files are sent via post and can be accessed just like any other uploaded file. The demos show how to  access the uploaded files for different programming languages.
 
@@ -29,7 +29,7 @@ Besides using the drag and drop feature to upload files, you can as well select 
 
 Should you want to remove an image so that it's not uploaded, hover over the image and click on ` Remove ` to delete it. For other file types click on the close icon on the top right corner of the file name to remove it from the upload queue.
 
-### <a name="draganddrop"> Drag and Drop Files to Upload </a> ###
+### <a name="draganddrop"> Drag and Drop Files to Upload </a>
 
 This is a jQuery plugin so it requires the jQuery library to be loaded first.
 
@@ -53,7 +53,7 @@ $("#profile-pic").fileuploader({
 	uploadurl: "http://localhost:3000/app/users/profile"
 }); 
 ```
-### <a name="multiplefiles"> Upload Multiple Files </a> ### 
+### <a name="multiplefiles"> Upload Multiple Files </a> 
 
 In order to be able to upload multiple files at once, set the ` multiple ` files option to ` true ` 
 
@@ -70,13 +70,13 @@ Multiple file upload is disabled by default, so that users can only upload one f
 
 If multiple files upload is set to false and you attempt to add more than one file, the last file to be added will replace the previous file added.
 
-### <a name="anyserver"> Multiple Language Support </a> ### 
+### <a name="anyserver"> Multiple Language Support </a> 
 
 You can upload your files to any server using any programming language in the back end i.e. java, php, node.js, ruby e.t.c. as you desire.
 
 The uploaded files are sent via post and so can be accessed with any custom code.
 
-### <a name="filecountlimit"> Limit the Number of Files to Upload </a> ### 
+### <a name="filecountlimit"> Limit the Number of Files to Upload </a> 
 
 To limit the number of files to be uploaded at one time, set the ` multiple ` option to ` true ` and then specify the number of files in the ` filecount ` option.
 
@@ -94,7 +94,7 @@ However, they can as well swap files by manually deleting other files and adding
 
 Specifying ` filecount ` while the ` multiple ` option is set to false or omitted would only allow one file  to be uploaded.
 
-### <a name="filesizelimit"> Limit the Size of Files to Upload </a> ### 
+### <a name="filesizelimit"> Limit the Size of Files to Upload </a>
 
 You can restrict the size of files to be uploaded to not exceede a particular file size. This you do by specifying the ` maxsize ` option in the configuration. Provide the file size in kilo bytes(kB) as an interger without the units and without any panctuation.
 
@@ -107,7 +107,7 @@ $("#profile-pic").fileuploader({
 
 When a user selects to upload a file that excedes the maxsize specified, an error message is displayed and the file is not added to the upload queue.
 
-### <a name="filetypelimit"> Limit the Type of Files to Upload </a> ### 
+### <a name="filetypelimit"> Limit the Type of Files to Upload </a>
 
 It is as well possible to only require the upload of particular file types i.e. images, pdf e.t.c.
 
@@ -125,7 +125,7 @@ This would only allow file types that are images of the jpeg format to be added 
 
 Files of type image are automatically previewed within the browser before upload. For all other file types, only the shortened file name and size are shown.
 
-### <a name="instantupload"> Instant File to Upload </a> ### 
+### <a name="instantupload"> Instant File to Upload </a>
 
 You can decide to have your files uploaded immediately after the user selects them. The files would still go through previous checks like filetype and maxsize validation. If they are the allowed files, they are immediately uploaded. 
 
