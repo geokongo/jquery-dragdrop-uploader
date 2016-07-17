@@ -1,0 +1,37 @@
+{
+    "name": "FileUploader",
+    "title": "jQuery File Uploader Plugin",
+    "description": "jQuery Ajax File Uploader for uploading files through drag and drop without page reload.",
+    "keywords": [
+        "uploader",
+        "ajax",
+        "drag and drop",
+        "file uploads",
+        "image uploads"
+    ],
+    "version": "0.0.1",
+    "author": {
+        "name": "Geoffrey Bans",
+        "url": "http://geoffreyoliver.com"
+    },
+    "maintainers": [
+        {
+            "name": "Geoffrey Bans",
+            "email": "geoffreybans@gmail.com",
+            "url": "http://geoffreyoliver.com"
+        }
+    ],
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/GeoffreyOliver/jquery-fileuploader/blob/master/LICENSE"
+        }
+    ],
+    "bugs": "https://github.com/GeoffreyOliver/jquery-fileuploader/issues",
+    "homepage": "https://github.com/GeoffreyOliver/jquery-fileuploader",
+    "docs": "https://github.com/GeoffreyOliver/jquery-fileuploader",
+    "download": "https://github.com/GeoffreyOliver/jquery-fileuploader/archive/master.zip",
+    "dependencies": {
+        "jquery": ">=1.7"
+    }
+}
