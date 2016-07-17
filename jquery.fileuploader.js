@@ -360,83 +360,6 @@
 				} 
 				else {
 
-					//check file type
-					if (settings.filetype !== null) {
-
-						if (settings.filetype == 'image') {
-
-						} 
-						else {
-
-						}
-
-					} 
-					else {
-
-						//check if multiple files is allowed
-						if (settings.multiple === true) {
-
-							//check if max number of files is set
-							if (settings.filecount !== null) {
-
-								if (parentDIV.querySelector("div.jquery-fileuploader-filepreviewarea").childNodes.length >= settings.filecount) {
-									//replace the first element
-									parentDIV
-										.querySelector("div.jquery-fileuploader-filepreviewarea")
-										.insertBefore(dataFile, parentDIV.querySelector("div.jquery-fileuploader-filepreviewarea").firstChild);
-
-									parentDIV.querySelector("div.jquery-fileuploader-filepreviewarea")
-										.removeChild(
-											parentDIV
-												.querySelector("div.jquery-fileuploader-filepreviewarea")
-												.lastChild);
-								} 
-								else {
-									//append element to preview area
-									parentDIV
-										.querySelector("div.jquery-fileuploader-filepreviewarea")
-										.appendChild(dataFile);
-
-								}
-
-							} 
-							else {
-								//append element to preview area
-								parentDIV
-									.querySelector("div.jquery-fileuploader-filepreviewarea")
-									.appendChild(dataFile);
-
-							}
-
-						} 
-						else {
-							
-							var childs = parentDIV.querySelector("div.jquery-fileuploader-filepreviewarea").childNodes;
-							
-							//remove items that are already present
-							$.each(childs,function(key, child){
-								child.parentNode.removeChild(child);
-							});
-
-							parentDIV
-								.querySelector("div.jquery-fileuploader-filepreviewarea")
-								.appendChild(dataFile);
-
-						}
-
-					}
-
-				}
-
-			} 
-			else {
-				//check file type
-				if (settings.filetype !== null) {
-
-
-				} 
-				else {
-
 					//check if multiple files is allowed
 					if (settings.multiple === true) {
 
@@ -454,6 +377,8 @@
 										parentDIV
 											.querySelector("div.jquery-fileuploader-filepreviewarea")
 											.lastChild);
+								//remove error messages
+								parentDIV.querySelector(".jquery-fileuploader-error-message").innerHTML = "";
 
 							} 
 							else {
@@ -461,6 +386,8 @@
 								parentDIV
 									.querySelector("div.jquery-fileuploader-filepreviewarea")
 									.appendChild(dataFile);
+								//remove error messages
+								parentDIV.querySelector(".jquery-fileuploader-error-message").innerHTML = "";
 
 							}
 
@@ -470,7 +397,8 @@
 							parentDIV
 								.querySelector("div.jquery-fileuploader-filepreviewarea")
 								.appendChild(dataFile);
-
+							//remove error messages
+							parentDIV.querySelector(".jquery-fileuploader-error-message").innerHTML = "";
 						}
 
 					} 
@@ -486,10 +414,76 @@
 						parentDIV
 							.querySelector("div.jquery-fileuploader-filepreviewarea")
 							.appendChild(dataFile);
+						//remove error messages
+						parentDIV.querySelector(".jquery-fileuploader-error-message").innerHTML = "";
 
 					}
 
 				}
+
+			} 
+			else {
+
+				//check if multiple files is allowed
+				if (settings.multiple === true) {
+
+					//check if max number of files is set
+					if (settings.filecount !== null) {
+
+						if (parentDIV.querySelector("div.jquery-fileuploader-filepreviewarea").childNodes.length >= settings.filecount) {
+							//replace the first element
+							parentDIV
+								.querySelector("div.jquery-fileuploader-filepreviewarea")
+								.insertBefore(dataFile, parentDIV.querySelector("div.jquery-fileuploader-filepreviewarea").firstChild);
+
+							parentDIV.querySelector("div.jquery-fileuploader-filepreviewarea")
+								.removeChild(
+									parentDIV
+										.querySelector("div.jquery-fileuploader-filepreviewarea")
+										.lastChild);
+							//remove error messages
+							parentDIV.querySelector(".jquery-fileuploader-error-message").innerHTML = "";
+
+						} 
+						else {
+							//append element to preview area
+							parentDIV
+								.querySelector("div.jquery-fileuploader-filepreviewarea")
+								.appendChild(dataFile);
+							//remove error messages
+							parentDIV.querySelector(".jquery-fileuploader-error-message").innerHTML = "";
+
+						}
+
+					} 
+					else {
+						//append element to preview area
+						parentDIV
+							.querySelector("div.jquery-fileuploader-filepreviewarea")
+							.appendChild(dataFile);
+						//remove error messages
+						parentDIV.querySelector(".jquery-fileuploader-error-message").innerHTML = "";
+
+					}
+
+				} 
+				else {
+					
+					var childs = parentDIV.querySelector("div.jquery-fileuploader-filepreviewarea").childNodes;
+					
+					//remove items that are already present
+					$.each(childs,function(key, child){
+						child.parentNode.removeChild(child);
+					});
+
+					parentDIV
+						.querySelector("div.jquery-fileuploader-filepreviewarea")
+						.appendChild(dataFile);
+					//remove error messages
+					parentDIV.querySelector(".jquery-fileuploader-error-message").innerHTML = "";
+
+				}
+
 
 			}
 
@@ -515,9 +509,6 @@
 		 * @return null
 		 */
 		function uploadFiles(previews){
-
-			//create the mutlipart-formdata type of form
-			formDATA = new FormData();
 
 			//check if there are items to upload
 			if (previews.childNodes.length > 0) {
