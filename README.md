@@ -27,6 +27,8 @@ You will be able to preview image files thumbnails before uploading. For any oth
 
 Besides using the drag and drop feature to upload files, you can as well select files by clicking on the file browser input box and select the files.
 
+Should you want to remove an image so that it's not uploaded, hover over the image and click on ` Remove ` to delete it. For other file types click on the close icon on the top right corner of the file name to remove it from the upload queue.
+
 ### <a name="draganddrop"> Drag and Drop Files to Upload </a> ###
 
 This is a jQuery plugin so it requires the jQuery library to be loaded first.
@@ -42,7 +44,7 @@ After loading the jquery library, load the plugin's minified javascript file.
 ```
 You do not need to load any separate css files as the styling of the drag and drop area is dynamically inserted using javascript. 
 
-Attach the fileuploader() function to an empty ` div ` field using an ` id ` as an identifier. <strong> Ensure the div is empty.</strong>
+Attach the fileuploader() function to an empty ` div ` field using an ` id ` as a unique identifier. <strong> Ensure the div is empty.</strong>
 
 The basic configuration is to specify an upload url.
 
@@ -64,17 +66,19 @@ $("#profile-pic").fileuploader({
 
 With this you can drag and drop as many files as you desire and then upload them at once.
 
-Multiple file upload is disabled by default, so that users can only upload one file. Therefore setting this option to false or ommitting it altogether means then same thing - only one file upload.
+Multiple file upload is disabled by default, so that users can only upload one file. Therefore setting this option to false or ommitting it altogether means then same thing - only one file uploaded.
+
+If multiple files upload is set to false and you attempt to add more than one file, the last file to be added will replace the previous file added.
 
 ### <a name="anyserver"> Multiple Language Support </a> ### 
 
 You can upload your files to any server using any programming language in the back end i.e. java, php, node.js, ruby e.t.c. as you desire.
 
-The uploaded file are sent via post and so can be accessed with any custom code.
+The uploaded files are sent via post and so can be accessed with any custom code.
 
 ### <a name="filecountlimit"> Limit the Number of Files to Upload </a> ### 
 
-To limit the number of file to be uploaded at one time, set the ` multiple ` option to ` true ` and then specify the number of files in the ` filecount ` option.
+To limit the number of files to be uploaded at one time, set the ` multiple ` option to ` true ` and then specify the number of files in the ` filecount ` option.
 
 ```javascript 
 $("#profile-pic").fileuploader({
@@ -84,13 +88,15 @@ $("#profile-pic").fileuploader({
 }); 
 ```
 
-If a user attemps to include more than the allowed number of files to be uploaded, an error message will be shown to them and the extra file is not added to the upload queue.
+If a user attemps to add more than the allowed number of files to be uploaded, the newly added files will replace the previous files from top to bottom i.e. the last item is removed and the items pushed down.
 
-However, then can still swap files by removing other files and adding new ones, before upload.
+However, they can as well swap files by manually deleting other files and adding new ones, before upload.
+
+Specifying ` filecount ` while the ` multiple ` option is set to false or omitted would only allow one file  to be uploaded.
 
 ### <a name="filesizelimit"> Limit the Size of Files to Upload </a> ### 
 
-You can restrict the size of files to be uploaded to not exceede a particular file size. This you do by specifying the ` maxsize ` option in the configuration. Provide the file size in kilo bytes(kB) as an interger without the units.
+You can restrict the size of files to be uploaded to not exceede a particular file size. This you do by specifying the ` maxsize ` option in the configuration. Provide the file size in kilo bytes(kB) as an interger without the units and without any panctuation.
 
 ```javascript 
 $("#profile-pic").fileuploader({
@@ -111,7 +117,7 @@ Specify the type of file to upload in the ` filetype ` option.
 $("#profile-pic").fileuploader({
 	uploadurl: "http://localhost:3000/app/users/profile",
 	maxsize: 1000,
-	filetype: "image/jpeg"
+	filetype: "image"
 }); 
 ```
 
@@ -136,4 +142,4 @@ $("#profile-pic").fileuploader({
 
 By default instantupload is set to false and you will need to click on the submit button to begin uploading files after selecting them. 
 
-In case you set the file instantupload to` true ` the submit/upload button would not be visible or will be in a disabled state(unusable) in order to avoid duplicate uploads by the user.
+In case you set the file instantupload to` true ` the submit/upload button will be in a disabled state(unusable) in order to avoid duplicate uploads by the user.
