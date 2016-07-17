@@ -431,11 +431,12 @@
 					if (settings.filecount !== null) {
 
 						if (parentDIV.querySelector("div.jquery-fileuploader-filepreviewarea").childNodes.length >= settings.filecount) {
-							//replace the first element
+							//prepend as the first element
 							parentDIV
 								.querySelector("div.jquery-fileuploader-filepreviewarea")
 								.insertBefore(dataFile, parentDIV.querySelector("div.jquery-fileuploader-filepreviewarea").firstChild);
 
+							//remove the last element from the queue
 							parentDIV.querySelector("div.jquery-fileuploader-filepreviewarea")
 								.removeChild(
 									parentDIV
@@ -555,6 +556,7 @@
 				var bar = itemContainer.querySelector(".jquery-uploader-progress-bar-placeholder");
 				bar.className += " jquery-uploader-progress-bar";
 				bar.style.width = "50%";
+				bar.setAttribute("aria-valuenow", "50%");
 
 				//set progress animation
 				var prog = itemContainer.querySelector(".jquery-uploader-progress");
@@ -590,6 +592,8 @@
 							//set progress to 100% and change style class
 							bar.className = "jquery-uploader-progress-bar-complete";
 							bar.style.width = "100%";
+							bar.setAttribute("aria-valuenow", "100%");
+
 
 							//stop animation
 							var prog = itemContainer.querySelector(".jquery-uploader-progress");
