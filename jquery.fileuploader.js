@@ -76,6 +76,7 @@
 		createDragAndDropArea();
 		createFilePreviewArea();
 		createInputButtons();
+		insertCSS();
 
 		/**
 		 * This method sets the drag and drop area for file uploads
@@ -657,25 +658,59 @@
 		    return bytes.toFixed(1)+' '+units[u];
 		}
 
-	};
+		/**
+		 * This method inserts the css styles for the jquery-uploader into the DOM
+		 * @param null
+		 * @return null
+		 */
+		function insertCSS(){
 
-	/**
-	 * This method removes classes from an element
-	 * @param string current The string containing the classes
-	 * @param string remove The particular class to remove
-	 * @return string The final class string after remove
-	 */
-	function removeClass(current, remove){
-		var newclass = "";
-		var classList = current.split(" ");
+			//define the css style string
+			var uploaderCSS = ".jquery-fileuploader-draganddroparea{font-weight: bold;text-align: center;padding: 1em 0;margin: 1em 0;color: #555;border: 2px dashed #555;border-radius: 7px;cursor: default;background-color: rgba(0,0,0,0.1);}.draganddroparea-hover{color: #f00;border-color: #f00;border-style: solid;box-shadow: inset 0 3px 4px #888;}#progress p.success{background: #0c0 none 0 0 no-repeat;}#progress p.failed{background: #c00 none 0 0 no-repeat;}img.jquery-uploader-img-thumbnail{display: inline-block;max-width: 100%;height: auto;background-color: #ffffff;}div.jquery-uploader-img-container {display: inline-block;width: 200px;margin: 4px;position: relative;height: 200px;border: 1px solid rgba(0,0,0,0.2);}}";
+			uploaderCSS += "div.jquery-uploader-img-container span {line-height: 200px;background: rgba(0,0,0,0.5);cursor: pointer;display: table;height: 200px;position: absolute;width: 200px;opacity: 0;-webkit-transition: opacity 500ms;-moz-transition: opacity 500ms;-o-transition: opacity 500ms;transition: opacity 500ms;}div.jquery-uploader-item-container span {background: rgba(0,0,0,0.5);cursor: pointer;display: table;position: absolute;width: 200px;opacity: 0;-webkit-transition: opacity 500ms;-moz-transition: opacity 500ms;-o-transition: opacity 500ms;transition: opacity 500ms;}div.jquery-uploader-img-container span:hover {opacity: 1;}div.jquery-uploader-img-container span a {display: table-cell;text-align: center;vertical-align: middle;text-decoration: none;color: white;font-size: 30px;font-family: helvetica;}div.jquery-uploader-img-container:hover {opacity: 0.7;}.jquery-uploader-file-submit-button{display: inline-block;padding: 6px 12px;margin-bottom: 0;font-size: 14px;font-weight: normal;line-height: 1.428571429;text-align: center;white-space: nowrap;vertical-align: middle;cursor: pointer;border: 1px solid transparent;border-radius: 4px;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;-o-user-select: none;user-select: none;color: #ffffff;background-color: #428bca;border-color: #357ebd;}.jquery-uploader-file-submit-button:hover,.jquery-uploader-file-submit-button:focus,.jquery-uploader-file-submit-button.active{color: #ffffff;background-color: #3276b1;border-color: #285e8e;}.jquery-uploader-progress {margin-bottom: 5px;margin-top: 5px;overflow: hidden;background-color: rgba(128,128,128,0.1);}.jquery-uploader-progress.active .jquery-uploader-progress-bar{-webkit-animation: progress-bar-stripes 2s linear infinite;-moz-animation: progress-bar-stripes 2s linear infinite;-ms-animation: progress-bar-stripes 2s linear infinite;-o-animation: progress-bar-stripes 2s linear infinite;animation: progress-bar-stripes 2s linear infinite;}";
+			uploaderCSS += "@-webkit-keyframes progress-bar-stripes {from {background-position: 40px 0;}to {background-position: 0 0;}}@-moz-keyframes progress-bar-stripes {from {background-position: 40px 0;}to {background-position: 0 0;}}@-o-keyframes progress-bar-stripes {from {background-position: 0 0;}to {background-position: 40px 0;}}@keyframes progress-bar-stripes {from {background-position: 40px 0;}to {background-position: 0 0;}}.jquery-uploader-progress-bar {float: left;width: 0;height: 100%;font-size: 15px;color: #ffffff;text-align: left;background-color: #d9534f;background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(0.25, rgba(255, 255, 255, 0.15)), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(255, 255, 255, 0.15)), color-stop(0.75, rgba(255, 255, 255, 0.15)), color-stop(0.75, transparent), to(transparent));background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);background-image: -moz-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);}.jquery-uploader-progress-bar-complete {float: left;width: 0;height: 100%;font-size: 15px;color: #ffffff;text-align: left;background-color: #5cb85c;}.jquery-uploader-item-close {position:absolute;right:0px;width:20px;height:20px;cursor:pointer;border:1px solid #000;background-color:#efefef;z-index: 5;-webkit-transition: opacity 150ms;background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAiElEQVR42r2RsQrDMAxEBRdl8SDcX8lQPGg1GBI6lvz/h7QyRRXV0qUULwfvwZ1tenw5PxToRPWMC52eA9+WDnlh3HFQ/xBQl86NFYJqeGflkiogrOvVlIFhqURFVho3x1moGAa3deMs+LS30CAhBN5nNxeT5hbJ1zwmji2k+aF6NENIPf/hs54f0sZFUVAMigAAAABJRU5ErkJggg==) no-repeat;text-align:right;border: 0;}.jquery-uploader-item-close:hover, .jquery-uploader-item-close:focus {background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAqklEQVR4XqWRMQ6DMAxF/1Fyilyj2SmIBUG5QcTCyJA5Z8jGhlBPgRi4TmoDraVmKFJlWYrlp/g5QfwRlwEVNWVa4WzfH9jK6kCkEkBjwxOhLghheMWMELUAqqwQ4OCbnE4LJnhr5IYdqQt4DJQjhe9u4vBBmnxHHNzRFkDGjHDo0VuTAqy2vAG4NkvXXDHxbGsIGlj3e835VFNtdugma/Jk0eXq0lP//5svi4PtO01oFfYAAAAASUVORK5CYII=);}.jquery-uploader-item-content {width:200px;position: relative;border:1px solid rgba(128,128,128,0.8);margin: 5px;color: #428bca;background-color: rgba(128,128,128,0.1);}";
 
-		//loop to remove this particular class
-		for(var i = 0; i < classList.length; i++){
-			if(classList[i].trim() !== remove){
-				newclass += classList[i].trim() + " ";
+			var documentHead = document.head || document.getElementsByTagName('head')[0];
+			var stylesheetNode = document.createElement('style');
+
+			stylesheetNode.type = 'text/css';
+
+			if (stylesheetNode.styleSheet){
+
+			  stylesheetNode.styleSheet.cssText = css;
+
+			} 
+			else {
+
+			  stylesheetNode.appendChild(document.createTextNode(uploaderCSS));
+
 			}
+
+			documentHead.appendChild(stylesheetNode);
 		}
 
-		return newclass;
+		/**
+		 * This method removes classes from an element
+		 * @param string current The string containing the classes
+		 * @param string remove The particular class to remove
+		 * @return string The final class string after remove
+		 */
+		function removeClass(current, remove){
+			var newclass = "";
+			var classList = current.split(" ");
+
+			//loop to remove this particular class
+			for(var i = 0; i < classList.length; i++){
+				if(classList[i].trim() !== remove){
+					newclass += classList[i].trim() + " ";
+				}
+			}
+
+			return newclass;
+
+		}
+	
 	};
+
+
 }(jQuery));
